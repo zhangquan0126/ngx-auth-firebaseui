@@ -23,6 +23,8 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  ValidatorFn,
+  ValidationErrors,
 } from "@angular/forms";
 
 // ANGULAR MATERIAL
@@ -68,6 +70,29 @@ export const PHONE_NUMBER_REGEX = new RegExp(
     "^[+]{0,1}[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\.]{0,1}[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]{4,12}$",
   ].join("")
 );
+
+export const signupConfirmPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  if (!control.parent || !control) {
+    return null;
+  }
+
+  const password = control.parent.get('password');
+  const passwordConfirmation = control.parent.get('passwordConfirmation');
+
+  if (!password || !passwordConfirmation) {
+    return null;
+  }
+
+  if (passwordConfirmation.value === '') {
+    return null;
+  }
+
+  if (password.value === passwordConfirmation.value) {
+    return null;
+  }
+
+  return {passwordsNotMatching: true};
+};
 
 @Component({
   selector: "ngx-auth-firebaseui",
@@ -170,6 +195,10 @@ export class AuthComponent
   @Input() registerCardTitleText = "Registration";
   @Input() registerButtonText = "Register";
   @Input() guestButtonText = "continue as guest";
+  @Input() passwordConfirmationText = 'Password Confirmation';
+  @Input() passwordConfirmationErrorRequiredText = 'Password confirmation is required';
+  @Input() passwordErrorMatchText = 'Password must match';
+  @Input() singupName = "name";
 
   // email confirmation component
   @Input() emailConfirmationTitle = "Confirm your e-mail address!";
@@ -414,7 +443,7 @@ export class AuthComponent
 
   private _initSignUpFormGroupBuilder() {
     this.signUpFormGroup = new FormGroup({
-      name: this.sigUpNameFormControl = new FormControl("", [
+      name: this.sigUpNameFormControl = new FormControl(this.singupName, [
         Validators.required,
         Validators.minLength(this.config.nameMinLength),
         Validators.maxLength(this.config.nameMaxLength),
@@ -428,6 +457,7 @@ export class AuthComponent
         Validators.minLength(this.min),
         Validators.maxLength(this.max),
       ]),
+      passwordConfirmation: this.sigUpPasswordConfirmationFormControl = new FormControl("", [Validators.required, signupConfirmPasswordValidator])
     });
   }
 

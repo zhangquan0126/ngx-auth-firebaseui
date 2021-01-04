@@ -174,55 +174,68 @@
               </mat-form-field>
 
               <!--password-->
-              <div fxLayout="column">
-                <mat-form-field [@animate]="{ value: '*', params: { x: '50px' } }"
-                                [appearance]="appearance">
-                  <mat-label>{{passwordText}}</mat-label>
-                  <input
-                    [formControl]="sigUpPasswordFormControl"
-                    [maxlength]="max"
-                    [minlength]="min"
-                    [type]="toggle.type"
-                    matInput
-                    name="password"
-                    autocomplete="new-password"
-                    required
-                  />
-                  <mat-pass-toggle-visibility #toggle matSuffix></mat-pass-toggle-visibility>
+              <mat-form-field [@animate]="{ value: '*', params: { x: '50px' } }"
+                              [appearance]="appearance">
+                <mat-label>{{passwordText}}</mat-label>
+                <input
+                  [formControl]="sigUpPasswordFormControl"
+                  [maxlength]="max"
+                  [minlength]="min"
+                  [type]="toggle.type"
+                  matInput
+                  name="password"
+                  autocomplete="new-password"
+                  required
+                />
+                <mat-pass-toggle-visibility #toggle matSuffix></mat-pass-toggle-visibility>
 
-                  <mat-icon [color]="color" matSuffix>lock</mat-icon>
+                <mat-icon [color]="color" matSuffix>lock</mat-icon>
 
-                  <mat-hint align="end" aria-live="polite">
-                    {{signUpFormGroup.value.password?.length}} / {{ max }}
-                  </mat-hint>
+                <mat-hint align="end" aria-live="polite">
+                  {{signUpFormGroup.value.password?.length}} / {{ max }}
+                </mat-hint>
 
-                  <mat-error *ngIf="sigUpPasswordFormControl.hasError('required')" class="cut-text">
-                    {{passwordErrorRequiredText}}
-                  </mat-error>
+                <mat-error *ngIf="sigUpPasswordFormControl.hasError('required')" class="cut-text">
+                  {{passwordErrorRequiredText}}
+                </mat-error>
 
-                  <mat-error *ngIf="sigUpPasswordFormControl.hasError('minlength')" class="cut-text">
-                    {{ passwordErrorMinLengthText }}
-                  </mat-error>
-                  <mat-error *ngIf="sigUpPasswordFormControl.hasError('maxlength')" class="cut-text">
-                    {{ passwordErrorMaxLengthText }}
-                  </mat-error>
+                <mat-error *ngIf="sigUpPasswordFormControl.hasError('minlength')" class="cut-text">
+                  {{ passwordErrorMinLengthText }}
+                </mat-error>
+                <mat-error *ngIf="sigUpPasswordFormControl.hasError('maxlength')" class="cut-text">
+                  {{ passwordErrorMaxLengthText }}
+                </mat-error>
 
-                </mat-form-field>
+              </mat-form-field>
 
-                <mat-password-strength #passwordStrength
-                                       [customValidator]="customValidator"
-                                       [enableDigitRule]="enableDigitRule"
-                                       [enableLengthRule]="enableLengthRule"
-                                       [enableLowerCaseLetterRule]="enableLowerCaseLetterRule"
-                                       [enableSpecialCharRule]="enableSpecialCharRule"
-                                       [enableUpperCaseLetterRule]="enableUpperCaseLetterRule"
-                                       [externalError]="sigUpPasswordFormControl.dirty"
-                                       [max]="max"
-                                       [min]="min"
-                                       [password]="signUpFormGroup.value.password">
-                </mat-password-strength>
-
-              </div>
+              <mat-form-field [@animate]="{ value: '*', params: { x: '50px' } }" [appearance]="appearance">
+                <mat-label>{{passwordConfirmationText}}</mat-label>
+                <input [formControl]="sigUpPasswordConfirmationFormControl" type="password" matInput name="passwordConfirmation" autocomplete="new-password" required/>
+                <mat-icon [color]="color" matSuffix>lock</mat-icon>
+                <mat-error *ngIf="sigUpPasswordConfirmationFormControl.hasError('required')" class="cut-text">
+                  {{passwordConfirmationErrorRequiredText}}
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    !sigUpPasswordConfirmationFormControl.hasError('required') &&
+                    sigUpPasswordConfirmationFormControl.hasError('passwordsNotMatching')
+                  " class="cut-text">
+                  {{passwordErrorMatchText}}
+                </mat-error>
+              </mat-form-field>
+              
+              <mat-password-strength #passwordStrength
+              [customValidator]="customValidator"
+              [enableDigitRule]="enableDigitRule"
+              [enableLengthRule]="enableLengthRule"
+              [enableLowerCaseLetterRule]="enableLowerCaseLetterRule"
+              [enableSpecialCharRule]="enableSpecialCharRule"
+              [enableUpperCaseLetterRule]="enableUpperCaseLetterRule"
+              [externalError]="sigUpPasswordFormControl.dirty"
+              [max]="max"
+              [min]="min"
+              [password]="signUpFormGroup.value.password">
+              </mat-password-strength>
 
               <button [@animate]="{ value: '*', params: { x: '100px' } }"
                       [color]="color"
