@@ -4,16 +4,12 @@ export interface ICredentials {
   email: string;
   password: string;
 }
-
-export interface ISignUpProcess {
-
-  signUp(name: string, credentials: ICredentials): any;
-}
-
-export interface ISignInProcess {
+export interface ISignProcess {
 
   onSuccessEmitter: any;
   onErrorEmitter: any;
+
+  signUp(name: string, credentials: ICredentials): any;
 
   signInWith(provider: AuthProvider, credentials?: ICredentials): any;
 

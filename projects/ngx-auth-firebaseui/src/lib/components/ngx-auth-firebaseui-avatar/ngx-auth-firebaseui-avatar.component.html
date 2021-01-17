@@ -24,11 +24,11 @@
   </div>
 
   <div fxFlex="100" fxLayout="column" [ngStyle]="{ 'padding-bottom.px': layout === 'default' ? 0 : 10 } ">
-    <div *ngFor="let menuItem of links" class="links-menu">
-      <button (click)="menuItem?.callback()" mat-menu-item>
-        <mat-icon>{{menuItem?.icon}}</mat-icon>
-        {{menuItem?.text}}</button>
-    </div>
+    <ng-container *ngFor="let menuItem of links">
+      <button (click)="menuItem?.callback()" color="primary" fxLayoutAlign="center" mat-raised-button>
+        {{menuItem?.text}}
+      </button>
+    </ng-container>
     <button *ngIf="canViewAccount" (click)="openProfile()" color="primary" fxLayoutAlign="center" mat-raised-button>{{ textProfile }}
     </button>
     <button (click)="signOut()" *ngIf="canLogout" color="warn" fxLayoutAlign="center" mat-raised-button>{{ textSignOut }}

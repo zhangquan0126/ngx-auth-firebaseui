@@ -13,8 +13,7 @@ import {
 } from "@angular/material/snack-bar";
 import {
   ICredentials,
-  ISignInProcess,
-  ISignUpProcess,
+  ISignProcess,
   NgxAuthFirebaseUIConfig,
 } from "../interfaces";
 import { NgxAuthFirebaseUIConfigToken } from "../tokens";
@@ -47,7 +46,7 @@ export enum AuthProvider {
 @Injectable({
   providedIn: "root",
 })
-export class AuthProcessService implements ISignInProcess, ISignUpProcess {
+export class AuthProcessService implements ISignProcess {
   onSuccessEmitter: EventEmitter<any> = new EventEmitter<any>();
   onErrorEmitter: EventEmitter<any> = new EventEmitter<any>();
 
@@ -296,7 +295,7 @@ export class AuthProcessService implements ISignInProcess, ISignUpProcess {
   }
 
   async handleSuccess(userCredential: UserCredential) {
-    this.onSuccessEmitter.next(userCredential.user);
+    this.onSuccessEmitter.emit(userCredential.user);
     if (this.config.enableFirestoreSync) {
       try {
         await this.fireStoreService.updateUserData(
