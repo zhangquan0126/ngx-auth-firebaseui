@@ -1,3 +1,4 @@
+<ng-container *ngIf="user?.photoURL; else noPhoto">
 <button *ngIf="user"
         class="ngx-auth-firebaseui-avatar-button"
         [matMenuTriggerFor]="posXMenu"
@@ -8,15 +9,38 @@
         style="background-size: cover">
   <span *ngIf="!user?.photoURL">{{displayNameInitials || ''}}</span>
 </button>
+</ng-container>
+<ng-template #noPhoto>
+  <button *ngIf="user"
+  class="ngx-auth-firebaseui-avatar-button"
+  [matMenuTriggerFor]="posXMenu"
+  [matTooltip]="user?.displayName"
+  [style.background-image]=""
+  aria-label="Open x-positioned menu"
+  mat-mini-fab
+  style="background-size: cover">
+<span *ngIf="!user?.photoURL">{{displayNameInitials || ''}}</span>
+</button>
+</ng-template>
 
 <mat-menu #posXMenu="matMenu" class="before ngx-auth-firebaseui-avatar-menu" xPosition="before" >
   <div fxLayout="row" fxLayout.xs="column" style="padding-left: 10px; padding-right: 10px" [ngStyle]="{ 'padding-top.px': layout === 'default' ? 0 : 10 }">
+    <ng-container *ngIf="user?.photoURL; else noPhoto">
     <button [style.background-image]="'url(' + user?.photoURL + ')'"
             mat-fab
             style="background-size: cover"
             *ngIf="layout === 'default'">
       <span *ngIf="!user?.photoURL">{{displayNameInitials || ''}}</span>
     </button>
+  </ng-container>
+  <ng-template #noPhoto>
+  <button [style.background-image]=""
+      mat-fab
+      style="background-size: cover"
+      *ngIf="layout === 'default'">
+  <span *ngIf="!user?.photoURL">{{displayNameInitials || ''}}</span>
+  </button>
+  </ng-template>
     <div fxLayout="column" style="padding-left: 10px; padding-right: 10px">
       <strong mat-card-title>{{user?.displayName}}</strong>
       <em mat-card-subtitle style="font-style: italic">{{user?.email}}</em>
